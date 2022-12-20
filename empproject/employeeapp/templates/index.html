@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>หน้าแรกของเว็บไซต์</title>
+{% endblock %}
+
+{% block content %}
+    <h2 class="text-center">ข้อมูลพนักงานทั้งหมด</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="input-group">
+            <input type="text" name="name" class="form-control" placeholder="ป้อนชื่อพนักงาน" required>
+            <button type="submit" class="btn btn-primary">ค้นหา</button>
+        </div>
+    </form>
+    <div class="row">
+        {% for emp in all_employee %}
+            <div class="col-md-4 my-2">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{emp.cover.url}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">{{emp.fname}} {{emp.lname}}</h5>
+                      <p class="card-text">ที่อยู่ : {{emp.address}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">เพศ : {{emp.gender}} , วันเกิด : {{emp.birthdate}}</li>
+                      <li class="list-group-item">แผนก : {{emp.department}}</li>
+                      <li class="list-group-item">เงินเดือน : {{emp.salary}} บาท</li>
+                    </ul>
+                    <div class="card-body">
+                      <a href="{% url 'edit' emp.id %}" class="btn btn-warning">แก้ไขข้อมูล</a>
+                      <a href="{% url 'delete' emp.id %}" class="btn btn-danger">ลบข้อมูล</a>
+                    </div>
+                  </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
